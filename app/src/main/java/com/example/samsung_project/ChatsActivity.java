@@ -74,9 +74,9 @@ public class ChatsActivity extends AppCompatActivity {
                 Iterator it = dataSnapshot.getChildren().iterator();
                 while(it.hasNext()){
 
-                    //if(((DataSnapshot)it.next()).child("members").hasChild(currentUserID)){
-                        set.add(((DataSnapshot)it.next()).getKey());
-                    //}
+                    if(((DataSnapshot)it.next()).child("members").hasChild(currentUserID)) {
+                        set.add(((DataSnapshot) it.next()).getKey());
+                    }
 
 
                 }
@@ -205,7 +205,7 @@ public class ChatsActivity extends AppCompatActivity {
                     if(groupName.equals("")){
                         Toast.makeText(getApplicationContext(), "Please enter group name", Toast.LENGTH_SHORT).show();
                     } else {
-                        ref.child("Groups").child(groupName).child("members").push().setValue(currentUserID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        ref.child("Groups").child(groupName).child("members").child(currentUserID).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){

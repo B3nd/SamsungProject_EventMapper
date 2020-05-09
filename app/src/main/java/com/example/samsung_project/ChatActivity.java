@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 public class ChatActivity extends AppCompatActivity {
 
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref;
     FirebaseAuth auth;
@@ -163,7 +164,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     class DataAdapter extends RecyclerView.Adapter<ViewHolder>{
-
+        private int MSG_TYPE_OTHER = 0;
+        private int MSG_TYPE_YOUR = 1;
 
         ArrayList<ChatMessage> messagesList;
         LayoutInflater inflater;
@@ -176,20 +178,28 @@ public class ChatActivity extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(inflater.inflate(R.layout.message, parent, false));
+            View view;
+            if(viewType == MSG_TYPE_YOUR) {
+                view = inflater.inflate(R.layout.message2, parent, false);
+            } else {
+                view = inflater.inflate(R.layout.message, parent, false);
+            }
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             holder.message.setText(messagesList.get(position).text);
-            holder.author.setText(messagesList.get(position).author);
-            /*final String user_id = messagesList.get(position).id;
-            // = ref.child("Users").child(user_id).child("name").getKey();
-            ref.child("Users").addChildEventListener(new ChildEventListener() {
+            //holder.author.setText(messagesList.get(position).author);
+            String id = messagesList.get(position).id;
+            ref.child("Users").child(id).addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    String name = dataSnapshot.child(user_id).child("name").getValue(String.class);
-                    holder.message.setText(name);
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    if(name == null){
+                        name = messagesList.get(position).author;
+                    }
+                    holder.author.setText(name);
                 }
 
                 @Override
@@ -213,7 +223,15 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
 
-             */
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if(messagesList.get(position).id.equals(currentUserID)){
+                return MSG_TYPE_YOUR;
+            } else {
+                return MSG_TYPE_OTHER;
+            }
         }
 
         @Override

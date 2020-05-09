@@ -1,5 +1,6 @@
 package com.example.samsung_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
     FirebaseUser user;
     String currentUserID;
     String name;
+    private static final int GalleyPick = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,46 +55,27 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.save_changes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ref.child("Users").child(currentUserID).child("name").setValue(nameChanging.getText().toString());
+            }
+        });
         image = (CircleImageView) findViewById(R.id.profile_image);
-        /*
-        if(user != null) {
-            currentUserID = user.getUid();
-        }
-        */
-         findViewById(R.id.save_changes).setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 ref.child("Users").child(currentUserID).child("name").setValue(nameChanging.getText().toString());
-             }
-         });
-            /*
-            ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("image")) {
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleyIntent = new Intent();
+                galleyIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleyIntent.setType("image/*");
+                startActivityForResult(galleyIntent, GalleyPick);
+            }
+        });
+    }
 
-                        String userName = dataSnapshot.child("name").getKey().toString();
-                        nameChanging.setText(userName);
-
-
-                    } else if (dataSnapshot.exists() && dataSnapshot.hasChild("name")) {
-
-                        String userName = dataSnapshot.child("name").getKey().toString();
-                        nameChanging.setText(userName);
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Пожалуйста, введите имя", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-            */
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 }
