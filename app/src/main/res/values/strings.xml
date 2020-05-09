@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">EventMapper</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="swipe_left_for_register">Свайпните влево для регистрации</string>
+    <string name="login">Вход</string>
+    <string name="password">Пароль</string>
+    <string name="e_mail">Email</string>
+    <string name="swipe_right_for_login">Свайпните вправо для входа</string>
+    <string name="register">Регистрация</string>
+    <string name="re_type_password">Введите пароль повторно</string>
+    <string name="your_name">Введите ваше имя</string>
+    <string name="not_found_error_message">Not found</string>
+    <integer name="com_vk_sdk_AppId">7436417</integer>
+    <string name="network_error_message">Network error</string>
+    <string name="remote_error_message">Remote server error</string>
+    <string name="unknown_error_message">Unknown error</string>
+</resources>
