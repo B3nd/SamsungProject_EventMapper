@@ -1,6 +1,7 @@
 package com.example.samsung_project;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
     String currentUserID;
     String name;
     private static final int GalleyPick = 1;
+    private StorageReference UserProfileImagesRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +48,8 @@ public class SettingsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference();
         currentUserID = auth.getCurrentUser().getUid();
+        //UserProfileImagesRef = FirebaseStorage().getInstance().getReference().child("Profile Images");
+
         ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -61,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
                 ref.child("Users").child(currentUserID).child("name").setValue(nameChanging.getText().toString());
             }
         });
+        /*
         image = (CircleImageView) findViewById(R.id.profile_image);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +79,29 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivityForResult(galleyIntent, GalleyPick);
             }
         });
+
+         */
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == GalleyPick && resultCode == RESULT_OK && data!=null){
+            Uri imageUri = data.getData();
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode == RESULT_OK){
+                Uri resultUri = result.getUri();
 
+                //StorageReference filePath = UserProfileImagesRef.child(currentUserID )
+
+            }
+
+        }
     }
 }

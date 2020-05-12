@@ -60,6 +60,10 @@ public class LoginFragment extends Fragment  {
         db_ref = FirebaseDatabase.getInstance().getReference();
 
         pref = root.getContext().getSharedPreferences("AppPref", MODE_PRIVATE);
+        if(pref.contains("email")){
+            String pref_email = pref.getString("email",  "");
+            email.setText(pref_email);
+        }
         Access = login_answer;
         serverResponse = (TextView) root.findViewById(R.id.response);
 
@@ -95,7 +99,7 @@ public class LoginFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 //Получаем текст из полей
-                String user_email = email.getText().toString();
+                final String user_email = email.getText().toString();
                 String user_password = password.getText().toString();
                 if(!user_email.equals("")) {
                     if(!user_password.equals("")) {
@@ -105,6 +109,8 @@ public class LoginFragment extends Fragment  {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()) {
                                         user = firebaseAuth.getCurrentUser();
+                                        SharedPreferences.Editor e = pref.edit();
+                                        e.putString(user_email, "email").apply();
                                         Intent i = new Intent(LoginFragment.this.getActivity(), ChooseActivity.class);
                                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(i);

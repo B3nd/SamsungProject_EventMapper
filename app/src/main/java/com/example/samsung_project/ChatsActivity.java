@@ -52,16 +52,15 @@ public class ChatsActivity extends AppCompatActivity {
         setTitle("Выберите чат");
 
         list = (ListView) findViewById(R.id.ChatsList);
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, groupsList) /*{
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, groupsList) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView)list.getChildAt(position);
-                textView.setTextColor(Color.WHITE);
-                return view;
+                TextView textView = (TextView) super.getView(position, convertView, parent);
+                textView.setTextColor(getResources().getColor(R.color.Light_Grey));
+                return textView;
             }
-        }*/;
+        };
         list.setAdapter(arrayAdapter);
 
 

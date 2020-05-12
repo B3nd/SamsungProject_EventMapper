@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
@@ -21,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FirstVkActivity extends Activity {
     private String[] scope = new String[]{VKAccessToken.EMAIL};
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,23 @@ public class FirstVkActivity extends Activity {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
+
+                auth.signInWithCustomToken(res.accessToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), "Successful logged in!", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(FirstVkActivity.this, ChooseActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error caught : "  + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(FirstVkActivity.this, MainActivity.class));
+                        }
+                    }
+                });
+
+
+
+                /*
                 String req_str = "http://api.vk.com/";///method/users.get?user_ids=" + res.userId + "&fields=first_name&access_token=" + res.accessToken + "&v=5.103";
 
                 //https://api.vk.com/method/users.get?user_ids=349142579&fields=first_name&access_token=4f89828fb5cc36e8fab0f6e922e85c025c316d398dbffaef61d34ce6a5beeec725178760c6f4dfeabf47c&v=5.103
@@ -60,6 +84,8 @@ public class FirstVkActivity extends Activity {
 
                     }
                 });
+
+                 */
 
 
 
