@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 /*
-public class ChooseActivity extends AppCompatActivity {
+public class MainUserActivity extends AppCompatActivity {
 
     Button create, enter, MapKit;
 
@@ -26,21 +26,21 @@ public class ChooseActivity extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(ChooseActivity.this, CreateActivity.class);
+                //Intent i = new Intent(MainUserActivity.this, CreateActivity.class);
                 //startActivity(i);
             }
         });
         MapKit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ChooseActivity.this, MapActivity.class);
+                Intent i = new Intent(MainUserActivity.this, MapActivity.class);
                 startActivity(i);
             }
         });
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(ChooseActivity.this, EnterActivity.class);
+                //Intent i = new Intent(MainUserActivity.this, EnterActivity.class);
                 //startActivity(i);
             }
         });
@@ -48,13 +48,14 @@ public class ChooseActivity extends AppCompatActivity {
 }
 */
 
-public class ChooseActivity extends AppCompatActivity{
+public class MainUserActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ViewPager viewPager = findViewById(R.id.viewPager);
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        pagerAdapter.addFragment(new ChatsListFragment());
         pagerAdapter.addFragment(new MapFragment());
         //pagerAdapter.addFragment(new ListFragment());
         viewPager.setAdapter(pagerAdapter);

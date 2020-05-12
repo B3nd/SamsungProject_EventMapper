@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:name="com.example.samsung_project.SecondVkActivity">
-        <activity android:name="com.example.samsung_project.MainActivity">
+        <activity android:name="com.example.samsung_project.EnterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.samsung_project.ChooseActivity"/>
+
+        <activity android:name="com.example.samsung_project.MainUserActivity"
+            android:theme="@style/Theme.AppCompat"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name="com.example.samsung_project.ChatActivity"

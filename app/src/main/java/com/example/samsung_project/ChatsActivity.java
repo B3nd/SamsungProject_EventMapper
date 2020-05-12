@@ -2,7 +2,6 @@ package com.example.samsung_project;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -141,7 +140,7 @@ public class ChatsActivity extends AppCompatActivity {
 
         if(id == R.id.logout_menu){
             auth.signOut();
-            startActivity(new Intent(ChatsActivity.this, MainActivity.class));
+            startActivity(new Intent(ChatsActivity.this, EnterActivity.class));
         } else if(id == R.id.settings_menu){
             startActivity(new Intent(ChatsActivity.this, SettingsActivity.class));
         } else if(id == R.id.Enter_group_menu) {

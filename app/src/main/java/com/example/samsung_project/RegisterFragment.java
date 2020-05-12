@@ -3,9 +3,7 @@ package com.example.samsung_project;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +21,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 
 public class RegisterFragment extends Fragment {
@@ -75,7 +71,7 @@ public class RegisterFragment extends Fragment {
                                                     String currentUserID = reg.getCurrentUser().getUid();
                                                     db_ref.child("Users").child(currentUserID).child("name").setValue(name_text);
                                                     new CurrentUser().name = name_text;
-                                                    Intent i = new Intent(RegisterFragment.this.getActivity(), ChooseActivity.class);
+                                                    Intent i = new Intent(RegisterFragment.this.getActivity(), MainUserActivity.class);
                                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     startActivity(i);
                                                 }

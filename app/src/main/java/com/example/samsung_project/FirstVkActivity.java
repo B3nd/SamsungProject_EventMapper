@@ -3,7 +3,6 @@ package com.example.samsung_project;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,14 +15,6 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FirstVkActivity extends Activity {
     private String[] scope = new String[]{VKAccessToken.EMAIL};
@@ -41,17 +32,28 @@ public class FirstVkActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
-            public void onResult(VKAccessToken res) {
+            public void onResult(final VKAccessToken res) {
 
-                auth.signInWithCustomToken(res.accessToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                auth.signInWithEmailAndPassword(res.email, res.accessToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "Successful logged in!", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(FirstVkActivity.this, ChooseActivity.class));
+                            startActivity(new Intent(FirstVkActivity.this, MainUserActivity.class));
                         } else {
-                            Toast.makeText(getApplicationContext(), "Error caught : "  + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(FirstVkActivity.this, MainActivity.class));
+                            auth.createUserWithEmailAndPassword(res.email, res.accessToken).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getApplicationContext(), "Successful logged in!", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(FirstVkActivity.this, MainUserActivity.class));
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Error caught : "  + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(FirstVkActivity.this, EnterActivity.class));
+                                    }
+                                }
+                            });
+
                         }
                     }
                 });
@@ -75,7 +77,7 @@ public class FirstVkActivity extends Activity {
 
                         //Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
                         new CurrentUser().name = str;
-                        startActivity(new Intent(FirstVkActivity.this, ChooseActivity.class));
+                        startActivity(new Intent(FirstVkActivity.this, MainUserActivity.class));
 
                     }
 
@@ -93,7 +95,7 @@ public class FirstVkActivity extends Activity {
             @Override
             public void onError(VKError error) {
                 Toast.makeText(getApplicationContext(), "Ошибка", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(FirstVkActivity.this, MainActivity.class));
+                startActivity(new Intent(FirstVkActivity.this, EnterActivity.class));
             }
         })) {
             super.onActivityResult(requestCode, resultCode, data);

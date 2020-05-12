@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +23,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -111,7 +108,7 @@ public class LoginFragment extends Fragment  {
                                         user = firebaseAuth.getCurrentUser();
                                         SharedPreferences.Editor e = pref.edit();
                                         e.putString(user_email, "email").apply();
-                                        Intent i = new Intent(LoginFragment.this.getActivity(), ChooseActivity.class);
+                                        Intent i = new Intent(LoginFragment.this.getActivity(), MainUserActivity.class);
                                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(i);
                                     } else {

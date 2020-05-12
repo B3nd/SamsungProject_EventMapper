@@ -27,6 +27,7 @@ import com.yandex.mapkit.map.CameraListener;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CameraUpdateSource;
 import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.VisibleRegionUtils;
 import com.yandex.mapkit.mapview.MapView;
@@ -70,6 +71,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
         SearchFactory.initialize(getContext());
 
         root = (ViewGroup) inflater.inflate(R.layout.coordinator_layout, null);
+        getActivity().getActionBar().hide();
 
         root.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +161,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
         for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
 
             Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
+
             if (resultLocation != null) {
                 mapObjects.addPlacemark(
                         resultLocation,
@@ -179,13 +182,15 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
                         information_title.setText(title);
                         Log.i("TAP_REGISTERED", title);
                         String desc = geoObjectTapEvent.getGeoObject().getDescriptionText();
+                        //String desc = geoObjectTapEvent.getGeoObject().getAref().get(0);
+                        //String desc = geoObjectTapEvent.getGeoObject().getMetadataContainer().getItem(String.class);
                         Log.i("description", desc);
                         if(!desc.equals("")){
                             information_text.setText(desc);
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        } else {
+                            information_text.setHeight(0);
                         }
-
-                        information_text.setText(geoObjectTapEvent.getGeoObject().getDescriptionText());
                         return true;
                     }
                 } catch (NullPointerException e) {
