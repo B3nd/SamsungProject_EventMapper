@@ -24,11 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RegisterFragment extends Fragment {
-
     public RegisterFragment() {}
-
     private DatabaseReference db_ref;
-
     FirebaseAuth reg;
 
     @Override
@@ -36,21 +33,20 @@ public class RegisterFragment extends Fragment {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_register, null);
         reg = FirebaseAuth.getInstance();
         db_ref = FirebaseDatabase.getInstance().getReference();
-
         Button register =root.findViewById(R.id.btn_register);
+        final EditText[] resetting_color = new EditText[1];
         final EditText name = (EditText) root.findViewById(R.id.et_name);
         final EditText email = (EditText) root.findViewById(R.id.et_email);
         final EditText pass = (EditText) root.findViewById(R.id.et_password);
         final EditText re_pass = (EditText) root.findViewById(R.id.et_repassword);
         final TextView register_result = (TextView) root.findViewById(R.id.register_result);
         register_result.setTextColor(Color.RED);
-
+        resetting_color[0] = name;
 
         register.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-
                 //Получаем текст из полей
                 final String name_text = name.getText().toString();
                 String email_text = email.getText().toString();
@@ -84,20 +80,28 @@ public class RegisterFragment extends Fragment {
                                     register_result.setText("Введённые пароли не совпадают");
                                 }
                             } else {
+                                resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                                 re_pass.setBackgroundColor(Color.RED);
                                 register_result.setText("Введите пароль повторно");
+                                resetting_color[0] = re_pass;
                             }
                         }else{
+                            resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                             pass.setBackgroundColor(Color.RED);
                             register_result.setText("Введите пароль");
+                            resetting_color[0] = pass;
                         }
                     }else{
+                        resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                         email.setBackgroundColor(Color.RED);
                         register_result.setText("Введите адрес email");
+                        resetting_color[0] = email;
                     }
                 }else{
+                    resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                     name.setBackgroundColor(Color.RED);
                     register_result.setText("Введите имя");
+                    resetting_color[0] = name;
                 }
             }
         });

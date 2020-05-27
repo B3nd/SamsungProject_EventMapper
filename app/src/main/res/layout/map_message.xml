@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/their_message"
-    android:paddingLeft="5dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="10dp"
-    android:layout_width="wrap_content" android:layout_height="wrap_content">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/message_user"
-        android:paddingRight="5dp"
-        android:text="message sender"
-        android:textStyle="normal|bold" />
-
-    <TextView
-        android:layout_below="@+id/message_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Message text Message text Message text Message text Message text Message text Message text Message text Message text Message text"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:id="@+id/message_text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp" />
-</RelativeLayout-->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -43,10 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/their_message"
+        android:paddingRight="17dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        android:paddingRight="17dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/message_user"
@@ -63,15 +34,27 @@
             android:id="@+id/message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="5dp"
             android:text="message text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/message_user" />
+
+        <com.yandex.mapkit.mapview.MapView
+            android:id="@+id/message_map_view"
+            android:background="@drawable/background_for_map"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

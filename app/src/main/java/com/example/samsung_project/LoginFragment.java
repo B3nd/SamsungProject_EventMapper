@@ -46,21 +46,22 @@ public class LoginFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_login, null);
 
-
         final EditText email = (EditText) root.findViewById(R.id.et_email);
         final EditText password = (EditText) root.findViewById(R.id.et_password);
+        final EditText[] resetting_color = new EditText[1];
+        resetting_color[0] = email;
         final TextView login_answer = (TextView) root.findViewById(R.id.login_result);
         login_answer.setTextColor(Color.RED);
         final Button login = root.findViewById(R.id.btn_login);
         auth = root.findViewById(R.id.vk_login);
         firebaseAuth = FirebaseAuth.getInstance();
         db_ref = FirebaseDatabase.getInstance().getReference();
-
         pref = root.getContext().getSharedPreferences("AppPref", MODE_PRIVATE);
         if(pref.contains("email")){
             String pref_email = pref.getString("email",  "");
             email.setText(pref_email);
         }
+
         Access = login_answer;
         serverResponse = (TextView) root.findViewById(R.id.response);
 
@@ -70,26 +71,6 @@ public class LoginFragment extends Fragment  {
                 startActivity(new Intent(LoginFragment.this.getActivity(), FirstVkActivity.class));
             }
         });
-
-
-        //debugging
-        login.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(LoginFragment.this.getActivity(), ChatActivity.class));
-                return true;
-            }
-        });
-        auth.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                startActivity(new Intent(LoginFragment.this.getActivity(), ChatsActivity.class));
-                return true;
-            }
-        });
-
-
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -119,12 +100,16 @@ public class LoginFragment extends Fragment  {
 
 
                     } else {
+                        resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                         password.setBackgroundColor(Color.RED);
                         login_answer.setText("Введите пароль");
+                        resetting_color[0] = password;
                     }
                 } else {
+                    resetting_color[0].setBackgroundColor(Color.TRANSPARENT);
                     email.setBackgroundColor(Color.RED);
                     login_answer.setText("Введите адрес email");
+                    resetting_color[0] = email;
                 }
             }
         });

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Create group"
+        android:title="Создать группу"
         android:id="@+id/Create_group__menu"
         app:showAsAction="never"/>
     <item
-        android:title="Enter group"
+        android:title="Войти в группу"
         android:id="@+id/Enter_group_menu"
         app:showAsAction="never"/>
     <item
-        android:title="Settings"
+        android:title="Настройки"
         android:id="@+id/settings_menu"
         app:showAsAction="never"/>
     <item
-        android:title="Logout"
+        android:title="Выйти"
         android:id="@+id/logout_menu"
         app:showAsAction="never"/>
 </menu>

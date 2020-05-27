@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="#C0C0C0"
-            android:text="Описание"
             android:gravity="center"
             android:textColor="#7F7F7F" />
 
@@ -45,6 +44,8 @@
             android:background="@drawable/corners"
             android:layout_width="match_parent"
             android:id="@+id/send"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_height="100dp"
             android:text="Отправить в чат"
             android:textColor="#7F7F7F"
@@ -52,10 +53,5 @@
 
     </LinearLayout>
 
-    <!--com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@+id/bottom_sheet"
-        app:layout_anchorGravity="top|end" /-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,6 +4,8 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    useLibrary 'org.apache.http.legacy'
+
 
     defaultConfig {
         applicationId "com.example.samsung_project"
