@@ -45,6 +45,7 @@ public class ChatsListFragment extends Fragment {
         list = (ListView) root.findViewById(R.id.ChatsList);
         currentUserID = auth.getCurrentUser().getUid();
 
+        //Редактирование отображения списка групп
         arrayAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, groupsList){
             @NonNull
             @Override
@@ -57,6 +58,7 @@ public class ChatsListFragment extends Fragment {
         };
         list.setAdapter(arrayAdapter);
 
+        //Получение всех групп, в которых состоит пользователь
         ref.child("Groups").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,6 +78,7 @@ public class ChatsListFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}});
 
+        //Отправка пользователя в выбранный чат
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +87,7 @@ public class ChatsListFragment extends Fragment {
             }
         });
 
+        //Проверка на наличие имени пользователя
         ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -95,6 +99,7 @@ public class ChatsListFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+
         return root;
     }
 }

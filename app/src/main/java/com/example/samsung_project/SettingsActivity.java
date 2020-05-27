@@ -80,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        /*
         if(requestCode == GalleyPick && resultCode == RESULT_OK && data!=null){
             Uri imageUri = data.getData();
             CropImage.activity()
@@ -97,5 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
         }
+        */
+
     }
 }

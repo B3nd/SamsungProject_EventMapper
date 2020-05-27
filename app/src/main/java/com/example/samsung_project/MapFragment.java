@@ -86,6 +86,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
 
     public MapFragment(){}
 
+    //Отображение результатов поиска
     private void submitQuery(String query) {
         searchSession = searchManager.submit(
                 query,
@@ -104,6 +105,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
         ref = FirebaseDatabase.getInstance().getReference();
         currentUserID = auth.getCurrentUser().getUid();
 
+        //Получение имени поьзователя
         ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,6 +117,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
         });
 
         root = (ViewGroup) inflater.inflate(R.layout.coordinator_layout, null);
+        //Редактирование отображения списка групп
         arrayAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, groupsList){
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -129,6 +132,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
             }
         };
 
+        //Получение списка групп, в которых состоит пользователь
         root.findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +154,8 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError){}});
+
+                //Создание окна выбора даты
                 final Calendar calendar = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(MapFragment.this.getContext(),
                         new DatePickerDialog.OnDateSetListener() {
@@ -158,6 +164,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
                                 month ++;
                                 date[0] = "" + dayOfMonth + "." + month + "." + year;
 
+                                //Создание окна выбора времени
                                 TimePickerDialog timePickerDialog = new TimePickerDialog(MapFragment.this.getContext(), new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -166,6 +173,8 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
                                         } else {
                                             date[1] = hourOfDay + ":" + minute;
                                         }
+
+                                        //Создание окна выбора группы
                                         AlertDialog.Builder builder = new AlertDialog.Builder(MapFragment.this.getActivity(), R.style.AlertDialog);
                                         builder.setTitle("Выберите группу");
 
@@ -181,6 +190,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 final String group_name = groupsList.get(which);
+                                                //Создание окна подтверждения выбранной даты, времени и группы
                                                 AlertDialog.Builder builderInner = new AlertDialog.Builder(MapFragment.this.getActivity());
                                                 String dialog_message_text = "Место: " + point_name[0] + "\n" +
                                                         "Группа: " + group_name + "\n" +
@@ -265,7 +275,7 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
 
         Map map = mapView.getMap();
 
-        map.move(new CameraPosition(new Point(55.753595, 37.621031), 19.0f, 0.0f, 0.0f));
+        map.move(new CameraPosition(new Point(55.753595, 37.621031), 16.0f, 0.0f, 0.0f));
 
         submitQuery(searchEdit.getText().toString());
         return root;
@@ -283,9 +293,11 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
 
     @Override
     public void onSearchResponse(@NonNull Response response) {
+        //Получение всех отметок, которые уже находятся на карте и их удаление
         MapObjectCollection mapObjects = mapView.getMap().getMapObjects();
         mapObjects.clear();
 
+        //Добавление отметок в коллекцию
         for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
             Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
             if (resultLocation != null) {
@@ -295,22 +307,25 @@ public class MapFragment extends Fragment implements Session.SearchListener, Cam
             }
         }
 
+        //Отображение информации о объекте, которой выбрал пользователь
         mapView.getMap().addTapListener(new GeoObjectTapListener() {
             @Override
             public boolean onObjectTap(@NonNull GeoObjectTapEvent geoObjectTapEvent) {
                 GeoObject g = geoObjectTapEvent.getGeoObject();
-                String title = geoObjectTapEvent.getGeoObject().getName();
+                String title = g.getName();
                 try {
                     if (!title.equals("")) {
-                        message_point[0] = geoObjectTapEvent.getGeoObject().getGeometry().get(0).getPoint();
+                        message_point[0] = g.getGeometry().get(0).getPoint();
                         point_name[0] = title;
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         information_title.setText(title);
                         Log.i("TAP_REGISTERED", title);
-                        String desc = geoObjectTapEvent.getGeoObject().getDescriptionText();
+                        String desc = g.getDescriptionText();
                         Log.i("description", desc);
                         if(!desc.equals("")){
+                            //Отображение описания объекта
                             information_text.setText(desc);
+                            information_text.setTextColor(Color.parseColor("#7F7F7F"));
                             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         } else {
                             information_text.setHint("");

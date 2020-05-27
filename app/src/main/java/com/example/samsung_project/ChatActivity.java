@@ -91,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
 
-
+        //получаем все сообщения из базы данных
         ref.child("Groups").child(currentGroupName).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
@@ -116,6 +116,7 @@ public class ChatActivity extends AppCompatActivity {
                 messages.add(m);
                 adapter.notifyDataSetChanged();
                 messagesList.smoothScrollToPosition(messages.size());
+                //Проверка на пустоты
                 for (ChatMessage c : messages){
                     if(c.text == null || c.text.equals("")){
                         messages.remove(c);
@@ -123,7 +124,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-
+        //Получаем имя пользователя
         ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,6 +137,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
+        //Получение точки из intent из карты
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,6 +188,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    //Определение отправителя сообщения и наличие точки в сообщении
     class DataAdapter extends RecyclerView.Adapter<ViewHolder>{
         private int MSG_TYPE_OTHER = 0;
         private int MSG_TYPE_YOUR = 1;

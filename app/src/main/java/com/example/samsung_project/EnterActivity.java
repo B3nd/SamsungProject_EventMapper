@@ -17,6 +17,7 @@ public class EnterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewPager viewPager = findViewById(R.id.viewPager);
         AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
+        //Добавление необходимых для входа фрагментов
         pagerAdapter.addFragment(new LoginFragment());
         pagerAdapter.addFragment(new RegisterFragment());
         viewPager.setAdapter(pagerAdapter);

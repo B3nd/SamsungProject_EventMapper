@@ -55,14 +55,15 @@ public class FirstVkActivity extends Activity {
             String str;
             @Override
             public void onResult(final VKAccessToken res) {
-
+                //Создание пароля из адреса электронной почты и ID пользователя
                 final String generatedPassword = Integer.toHexString(res.userId.hashCode()) + res.email.charAt(res.email.length() - 2) + "-Rwv+" + res.userId.substring(res.userId.length() / 2) + Integer.toHexString(res.email.substring(0, res.email.length() - 2).hashCode()) + "qqbs" + res.userId.charAt(2) + "*/lzaq" + Integer.toHexString(res.email.substring(res.email.length() / 2, res.email.length() - 4).hashCode());
-
+                //Шифрование созданного выше пароля
                 final String base64pass = Base64.encodeToString(generatedPassword.getBytes(), 0);
                 auth.signInWithEmailAndPassword(res.email, base64pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            //Если пользователя нет в системе - регистрируем
                             Toast.makeText(getApplicationContext(), "Successful logged in!", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(FirstVkActivity.this, MainUserActivity.class));
                         } else {

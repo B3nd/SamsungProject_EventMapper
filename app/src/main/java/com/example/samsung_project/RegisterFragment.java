@@ -66,7 +66,7 @@ public class RegisterFragment extends Fragment {
                                                 if(task.isSuccessful()){
                                                     String currentUserID = reg.getCurrentUser().getUid();
                                                     db_ref.child("Users").child(currentUserID).child("name").setValue(name_text);
-                                                    new CurrentUser().name = name_text;
+
                                                     Intent i = new Intent(RegisterFragment.this.getActivity(), MainUserActivity.class);
                                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     startActivity(i);

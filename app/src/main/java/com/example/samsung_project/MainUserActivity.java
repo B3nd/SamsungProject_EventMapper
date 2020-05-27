@@ -51,6 +51,7 @@ public class MainUserActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Редактирование отображения списка групп при отправке точки
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, groupsList){
             @NonNull
             @Override
@@ -61,7 +62,7 @@ public class MainUserActivity extends AppCompatActivity{
                 return textView;
             }
         };
-
+        //Получение имени пользователя
         ref.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,6 +75,7 @@ public class MainUserActivity extends AppCompatActivity{
             }
         });
 
+        //Получение списка групп, в которых состоит пользователь
         ref.child("Groups").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -127,7 +129,7 @@ public class MainUserActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-
+    //Создание и насторйка пунктов меню
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -149,7 +151,7 @@ public class MainUserActivity extends AppCompatActivity{
                 public void onClick(DialogInterface dialog, int which) {
                     final String groupName = groupNameField.getText().toString();
                     if (groupName.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Please enter group name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Пожалйста, введите название группы", Toast.LENGTH_SHORT).show();
                     } else {
                         ref.child("Groups").addValueEventListener(new ValueEventListener() {
                             @Override
@@ -164,10 +166,10 @@ public class MainUserActivity extends AppCompatActivity{
                                             }
                                             });
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "You already are in this group", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Вы уже находитесь в этой группе", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Entered group does not exist", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Группа с введённым именем не существует", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             @Override
@@ -205,7 +207,7 @@ public class MainUserActivity extends AppCompatActivity{
                                 public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     groupsList.add(groupName);
-                                    Toast.makeText(getApplicationContext(), groupName + " created!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(),"Группа " + groupName + " создана!", Toast.LENGTH_LONG).show();
                                     arrayAdapter.notifyDataSetChanged();
                                 }
                             }
